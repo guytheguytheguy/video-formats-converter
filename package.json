@@ -8,8 +8,12 @@
   },
   "scripts": {
     "start": "node src/cli.js",
+    "kill": "node scripts/kill-port.js",
+    "preserver": "node scripts/kill-port.js",
     "server": "node src/server.js",
+    "predev": "node scripts/kill-port.js",
     "dev": "node src/server.js",
+    "preelectron": "node scripts/kill-port.js",
     "electron": "electron .",
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",

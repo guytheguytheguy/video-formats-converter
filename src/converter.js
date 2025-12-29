@@ -60,23 +60,31 @@ class VideoConverter {
     let outputWidth, outputHeight, cropWidth, cropHeight, padWidth, padHeight;
 
     // Determine base dimensions
+    // For portrait output (9:16), we want to maximize the output size
+    // Use the larger input dimension as the basis
     if (resolution && RESOLUTION_PRESETS[resolution]) {
       const preset = RESOLUTION_PRESETS[resolution];
       if (targetRatio >= 1) {
+        // Landscape output
         outputWidth = preset.width;
         outputHeight = Math.round(preset.width / targetRatio);
       } else {
+        // Portrait output
         outputHeight = preset.height;
         outputWidth = Math.round(preset.height * targetRatio);
       }
     } else {
-      // Use input dimensions as base
-      if (targetRatio >= inputRatio) {
-        outputWidth = inputWidth;
-        outputHeight = Math.round(inputWidth / targetRatio);
+      // No resolution specified - use input dimensions smartly
+      const maxDimension = Math.max(inputWidth, inputHeight);
+
+      if (targetRatio >= 1) {
+        // Landscape output (16:9, etc) - width is larger
+        outputWidth = maxDimension;
+        outputHeight = Math.round(maxDimension / targetRatio);
       } else {
-        outputHeight = inputHeight;
-        outputWidth = Math.round(inputHeight * targetRatio);
+        // Portrait output (9:16, etc) - height is larger
+        outputHeight = maxDimension;
+        outputWidth = Math.round(maxDimension * targetRatio);
       }
     }
 
@@ -118,25 +126,43 @@ class VideoConverter {
         };
       }
     } else if (mode === TRANSFORM_MODES.FILL) {
-      // Calculate crop dimensions to fill the frame
+      // FILL mode: Scale to fill entire frame, crop excess
+      // For 16:9 -> 9:16: scale up so height fills, then crop left/right
       if (inputRatio > targetRatio) {
-        // Input is wider - crop sides
-        cropHeight = inputHeight;
-        cropWidth = Math.round(inputHeight * targetRatio / 2) * 2;
+        // Input is wider than target - scale based on height, crop width
+        // Scale so input height -> output height, then crop the extra width
+        const scaleRatio = outputHeight / inputHeight;
+        const scaledWidth = Math.ceil((inputWidth * scaleRatio) / 2) * 2;
+        // Crop from center
+        cropWidth = outputWidth;
+        cropHeight = outputHeight;
+        const cropX = Math.max(0, Math.floor((scaledWidth - outputWidth) / 4) * 2);
+        return {
+          outputWidth,
+          outputHeight,
+          scaledWidth,
+          scaledHeight: outputHeight,
+          cropX,
+          cropY: 0,
+          mode: 'scale_crop'
+        };
       } else {
-        // Input is taller - crop top/bottom
-        cropWidth = inputWidth;
-        cropHeight = Math.round(inputWidth / targetRatio / 2) * 2;
+        // Input is taller than target - scale based on width, crop height
+        const scaleRatio = outputWidth / inputWidth;
+        const scaledHeight = Math.ceil((inputHeight * scaleRatio) / 2) * 2;
+        cropWidth = outputWidth;
+        cropHeight = outputHeight;
+        const cropY = Math.max(0, Math.floor((scaledHeight - outputHeight) / 4) * 2);
+        return {
+          outputWidth,
+          outputHeight,
+          scaledWidth: outputWidth,
+          scaledHeight,
+          cropX: 0,
+          cropY,
+          mode: 'scale_crop'
+        };
       }
-      return {
-        outputWidth,
-        outputHeight,
-        cropWidth,
-        cropHeight,
-        cropX: Math.round((inputWidth - cropWidth) / 2),
-        cropY: Math.round((inputHeight - cropHeight) / 2),
-        mode: 'crop'
-      };
     } else {
       // Stretch mode - just scale to target dimensions
       return {
@@ -159,6 +185,10 @@ class VideoConverter {
     } else if (mode === 'crop') {
       const { cropWidth, cropHeight, cropX, cropY } = dimensions;
       return `crop=${cropWidth}:${cropHeight}:${cropX}:${cropY},scale=${outputWidth}:${outputHeight}`;
+    } else if (mode === 'scale_crop') {
+      // Scale first to fill, then crop to exact dimensions
+      const { scaledWidth, scaledHeight, cropX, cropY } = dimensions;
+      return `scale=${scaledWidth}:${scaledHeight},crop=${outputWidth}:${outputHeight}:${cropX}:${cropY}`;
     } else {
       return `scale=${outputWidth}:${outputHeight}`;
     }

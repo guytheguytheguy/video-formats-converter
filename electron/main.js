@@ -42,8 +42,20 @@ async function createWindow() {
 
   mainWindow.loadURL('http://localhost:3000');
 
+  // Show dev tools in development
+  // mainWindow.webContents.openDevTools();
+
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+  });
+
+  // Handle load failures
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('Failed to load:', errorDescription);
+    // Retry after a delay if server wasn't ready
+    setTimeout(() => {
+      mainWindow.loadURL('http://localhost:3000');
+    }, 2000);
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {

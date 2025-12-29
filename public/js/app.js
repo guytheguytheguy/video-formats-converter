@@ -7,7 +7,7 @@ class VideoConverterApp {
     this.currentJobId = null;
     this.settings = {
       ratio: '9:16',
-      mode: 'fit',
+      mode: 'fill',  // Default to fill for full-frame output
       format: 'mp4',
       quality: 'medium',
       resolution: '',
