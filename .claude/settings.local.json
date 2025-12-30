@@ -7,7 +7,9 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial release: Video Formats Converter v1.0.0\n\nFeatures:\n- Aspect ratio conversion \\(16:9, 9:16, 1:1, 4:5\\)\n- Format conversion \\(MP4, MOV, MKV, AVI, WebM\\)\n- Transform modes \\(fit, fill, stretch\\)\n- CLI with quick commands \\(portrait, landscape, square\\)\n- Web dashboard with real-time progress\n- Batch conversion support\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(gh auth status:*)",
-      "Bash(ffprobe:*)"
+      "Bash(ffprobe:*)",
+      "Bash(node scripts/kill-port.js:*)",
+      "Bash(node -e:*)"
     ]
   }
 }
