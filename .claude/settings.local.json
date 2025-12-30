@@ -16,7 +16,12 @@
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
       "Bash(npx electron-builder:*)",
-      "Bash(wmic process where \"name like ''%VideoConvert%'' or name like ''%electron%''\" get processid,name)"
+      "Bash(wmic process where \"name like ''%VideoConvert%'' or name like ''%electron%''\" get processid,name)",
+      "Bash(curl:*)",
+      "Bash(cd:*)",
+      "Bash(node:*)",
+      "Bash(timeout /t 2 /nobreak)",
+      "Bash(ping:*)"
     ]
   }
 }

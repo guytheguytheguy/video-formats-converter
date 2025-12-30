@@ -244,16 +244,133 @@
         <div class="container">
           <div class="hero">
             <h1>Batch Conversion</h1>
-            <p>Convert multiple videos at once</p>
+            <p>Convert multiple videos at once with the same settings</p>
           </div>
-          <div class="coming-soon">
+
+          <!-- Pro Required Notice (shown for free users) -->
+          <div class="batch-pro-notice" id="batch-pro-notice" style="display: none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
-            <h3>Coming Soon</h3>
-            <p>Batch conversion will be available in the next update.</p>
-            <p>For now, use the CLI: <code>vconvert batch ./videos -r 9:16</code></p>
+            <div>
+              <h3>Pro Feature</h3>
+              <p>Batch conversion is available with a Pro license.</p>
+              <button class="upgrade-btn" onclick="app.showUpgradeModal()">Upgrade to Pro</button>
+            </div>
+          </div>
+
+          <!-- Batch Upload Zone (shown for pro users) -->
+          <div class="batch-container" id="batch-container">
+            <div class="batch-upload-zone" id="batch-upload-zone">
+              <div class="upload-content">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <h3>Drop multiple videos here</h3>
+                <p>or click to browse</p>
+                <span class="upload-formats">MP4, MOV, MKV, AVI, WebM (max 500MB each)</span>
+              </div>
+              <input type="file" id="batch-file-input" accept=".mp4,.mov,.mkv,.avi,.webm,.m4v,.wmv" multiple hidden>
+            </div>
+
+            <!-- Batch Queue -->
+            <div class="batch-queue" id="batch-queue" style="display: none;">
+              <div class="batch-queue-header">
+                <h3>Video Queue <span class="queue-count" id="queue-count">0 videos</span></h3>
+                <div class="batch-actions">
+                  <button class="btn-secondary" id="add-more-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add More
+                  </button>
+                  <button class="btn-secondary" id="clear-queue-btn">Clear All</button>
+                </div>
+              </div>
+
+              <div class="batch-list" id="batch-list">
+                <!-- Batch items will be added here dynamically -->
+              </div>
+
+              <!-- Batch Settings -->
+              <div class="batch-settings">
+                <h4>Apply to All Videos</h4>
+                <div class="batch-settings-grid">
+                  <div class="setting-group">
+                    <label>Aspect Ratio</label>
+                    <select id="batch-ratio" class="select">
+                      <option value="9:16">9:16 - Portrait</option>
+                      <option value="16:9">16:9 - Landscape</option>
+                      <option value="1:1">1:1 - Square</option>
+                      <option value="4:5">4:5 - Portrait</option>
+                    </select>
+                  </div>
+                  <div class="setting-group">
+                    <label>Transform Mode</label>
+                    <select id="batch-mode" class="select">
+                      <option value="fill">Fill - Full frame (crop)</option>
+                      <option value="fit">Fit - Black bars</option>
+                      <option value="stretch">Stretch - Distort</option>
+                    </select>
+                  </div>
+                  <div class="setting-group">
+                    <label>Output Format</label>
+                    <select id="batch-format" class="select">
+                      <option value="mp4">MP4</option>
+                      <option value="mov">MOV</option>
+                      <option value="mkv">MKV</option>
+                      <option value="webm">WebM</option>
+                    </select>
+                  </div>
+                  <div class="setting-group">
+                    <label>Quality</label>
+                    <select id="batch-quality" class="select">
+                      <option value="high">High</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Convert All Button -->
+              <button class="convert-btn batch-convert-btn" id="batch-convert-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Convert All Videos</span>
+              </button>
+            </div>
+
+            <!-- Batch Progress -->
+            <div class="batch-progress" id="batch-progress" style="display: none;">
+              <div class="batch-progress-header">
+                <h3>Converting Videos</h3>
+                <span class="batch-progress-count" id="batch-progress-count">0 / 0</span>
+              </div>
+              <div class="batch-progress-list" id="batch-progress-list">
+                <!-- Progress items will be added here -->
+              </div>
+            </div>
+
+            <!-- Batch Complete -->
+            <div class="batch-complete" id="batch-complete" style="display: none;">
+              <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <h3>All Conversions Complete!</h3>
+              <p id="batch-complete-count">0 videos converted successfully</p>
+              <div class="batch-download-list" id="batch-download-list">
+                <!-- Download links will be added here -->
+              </div>
+              <button class="new-conversion-btn" id="batch-new-btn">Convert More Videos</button>
+            </div>
           </div>
         </div>
       </section>
