@@ -5,6 +5,8 @@ class VideoConverterApp {
     this.socket = io();
     this.currentFile = null;
     this.currentJobId = null;
+    this.isPro = false;
+    this.limits = null;
     this.settings = {
       ratio: '9:16',
       mode: 'fill',  // Default to fill for full-frame output
@@ -17,10 +19,194 @@ class VideoConverterApp {
     this.init();
   }
 
-  init() {
+  async init() {
+    await this.checkLicenseStatus();
     this.bindEvents();
     this.bindSocketEvents();
     this.updateAspectPreview();
+    this.updateUIForLicense();
+  }
+
+  async checkLicenseStatus() {
+    try {
+      const response = await fetch('/api/license');
+      const data = await response.json();
+      this.isPro = data.isPro;
+      this.limits = data.limits;
+      console.log('License status:', this.isPro ? 'Pro' : 'Free', this.limits);
+    } catch (err) {
+      console.error('Failed to check license:', err);
+      this.isPro = false;
+    }
+  }
+
+  updateUIForLicense() {
+    // Update header with Pro badge or upgrade button
+    const nav = document.querySelector('.nav');
+    let badge = document.getElementById('license-badge');
+
+    if (!badge) {
+      badge = document.createElement('div');
+      badge.id = 'license-badge';
+      badge.className = 'license-badge';
+      nav.appendChild(badge);
+    }
+
+    if (this.isPro) {
+      badge.innerHTML = `<span class="pro-badge">PRO</span>`;
+      badge.onclick = null;
+    } else {
+      badge.innerHTML = `<button class="upgrade-btn" onclick="app.showUpgradeModal()">Upgrade to Pro</button>`;
+    }
+
+    // Disable pro-only formats for free users
+    const formatSelect = document.getElementById('format-select');
+    if (formatSelect) {
+      Array.from(formatSelect.options).forEach(option => {
+        const isProFormat = !['mp4'].includes(option.value);
+        if (isProFormat && !this.isPro) {
+          option.disabled = true;
+          option.textContent = option.textContent.replace(' (Pro)', '') + ' (Pro)';
+        }
+      });
+    }
+
+    // Disable 4K/1080p for free users
+    const resSelect = document.getElementById('resolution-select');
+    if (resSelect) {
+      Array.from(resSelect.options).forEach(option => {
+        const isProRes = ['4k', '1080p'].includes(option.value);
+        if (isProRes && !this.isPro) {
+          option.disabled = true;
+          if (!option.textContent.includes('(Pro)')) {
+            option.textContent += ' (Pro)';
+          }
+        }
+      });
+    }
+
+    // Show watermark warning for free users
+    let watermarkWarning = document.getElementById('watermark-warning');
+    if (!this.isPro) {
+      if (!watermarkWarning) {
+        watermarkWarning = document.createElement('div');
+        watermarkWarning.id = 'watermark-warning';
+        watermarkWarning.className = 'watermark-warning';
+        watermarkWarning.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          Free version adds a small watermark. <a href="#" onclick="app.showUpgradeModal(); return false;">Upgrade to remove</a>
+        `;
+        const convertBtn = document.getElementById('convert-btn');
+        if (convertBtn) {
+          convertBtn.parentNode.insertBefore(watermarkWarning, convertBtn);
+        }
+      }
+    } else if (watermarkWarning) {
+      watermarkWarning.remove();
+    }
+  }
+
+  showUpgradeModal() {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('upgrade-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'upgrade-modal';
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <button class="modal-close" onclick="app.hideUpgradeModal()">&times;</button>
+          <div class="modal-header">
+            <h2>Upgrade to Pro</h2>
+            <p>Unlock all features for just <strong>$29</strong> (one-time)</p>
+          </div>
+          <div class="modal-body">
+            <div class="feature-comparison">
+              <div class="plan free-plan">
+                <h3>Free</h3>
+                <ul>
+                  <li>MP4 format only</li>
+                  <li>720p max resolution</li>
+                  <li>Watermark on videos</li>
+                  <li>Single file conversion</li>
+                </ul>
+              </div>
+              <div class="plan pro-plan">
+                <h3>Pro <span class="price">$29</span></h3>
+                <ul>
+                  <li class="highlight">All formats (MP4, MOV, MKV, AVI, WebM)</li>
+                  <li class="highlight">Up to 4K resolution</li>
+                  <li class="highlight">No watermark</li>
+                  <li class="highlight">Batch conversion</li>
+                  <li class="highlight">Lifetime updates</li>
+                </ul>
+              </div>
+            </div>
+            <div class="license-input-section">
+              <p>Already have a license key?</p>
+              <div class="license-input-group">
+                <input type="text" id="license-key-input" placeholder="VC-XXXX-XXXX-XXXX" />
+                <button onclick="app.activateLicense()">Activate</button>
+              </div>
+              <p id="license-error" class="license-error"></p>
+            </div>
+            <div class="buy-section">
+              <a href="https://lemonsqueezy.com" target="_blank" class="buy-btn">
+                Buy Pro License - $29
+              </a>
+              <p class="guarantee">30-day money-back guarantee</p>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    modal.classList.add('show');
+  }
+
+  hideUpgradeModal() {
+    const modal = document.getElementById('upgrade-modal');
+    if (modal) {
+      modal.classList.remove('show');
+    }
+  }
+
+  async activateLicense() {
+    const input = document.getElementById('license-key-input');
+    const errorEl = document.getElementById('license-error');
+    const licenseKey = input.value.trim().toUpperCase();
+
+    if (!licenseKey) {
+      errorEl.textContent = 'Please enter a license key';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/license/activate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ licenseKey })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        this.isPro = true;
+        this.limits = data.limits;
+        this.hideUpgradeModal();
+        this.updateUIForLicense();
+        alert('License activated successfully! Enjoy Pro features.');
+      } else {
+        errorEl.textContent = data.error || 'Invalid license key';
+      }
+    } catch (err) {
+      errorEl.textContent = 'Failed to validate license. Please try again.';
+    }
   }
 
   bindEvents() {
@@ -91,6 +277,11 @@ class VideoConverterApp {
 
     // Selects
     document.getElementById('format-select').addEventListener('change', (e) => {
+      if (!this.isPro && e.target.value !== 'mp4') {
+        e.target.value = 'mp4';
+        this.showUpgradeModal();
+        return;
+      }
       this.settings.format = e.target.value;
     });
 
@@ -99,6 +290,11 @@ class VideoConverterApp {
     });
 
     document.getElementById('resolution-select').addEventListener('change', (e) => {
+      if (!this.isPro && ['4k', '1080p'].includes(e.target.value)) {
+        e.target.value = '720p';
+        this.showUpgradeModal();
+        return;
+      }
       this.settings.resolution = e.target.value;
     });
 
@@ -179,6 +375,9 @@ class VideoConverterApp {
       </div>
     `;
     document.getElementById('video-info').innerHTML = infoHtml;
+
+    // Update UI for license status
+    this.updateUIForLicense();
   }
 
   updateAspectPreview() {
@@ -220,6 +419,16 @@ class VideoConverterApp {
       });
 
       const data = await response.json();
+
+      // Check if pro feature was blocked
+      if (response.status === 403 && data.requiresPro) {
+        document.getElementById('progress-section').style.display = 'none';
+        document.getElementById('converter-panel').style.display = 'block';
+        convertBtn.disabled = false;
+        this.showUpgradeModal();
+        return;
+      }
+
       this.currentJobId = data.jobId;
 
       // Listen for progress updates
@@ -268,6 +477,18 @@ class VideoConverterApp {
     const downloadBtn = document.getElementById('download-btn');
     downloadBtn.href = url;
     downloadBtn.download = filename;
+
+    // Show watermark notice for free users
+    if (!this.isPro) {
+      let notice = document.getElementById('free-notice');
+      if (!notice) {
+        notice = document.createElement('p');
+        notice.id = 'free-notice';
+        notice.className = 'free-notice';
+        notice.innerHTML = 'Video includes watermark. <a href="#" onclick="app.showUpgradeModal(); return false;">Upgrade to Pro</a> to remove.';
+        downloadBtn.parentNode.insertBefore(notice, downloadBtn.nextSibling);
+      }
+    }
   }
 
   resetConverter() {
@@ -290,6 +511,10 @@ class VideoConverterApp {
 
     // Enable convert button
     document.getElementById('convert-btn').disabled = false;
+
+    // Remove free notice
+    const notice = document.getElementById('free-notice');
+    if (notice) notice.remove();
   }
 
   formatDuration(seconds) {

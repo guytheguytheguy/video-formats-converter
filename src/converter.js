@@ -2,13 +2,26 @@ const ffmpeg = require('fluent-ffmpeg');
 const path = require('path');
 const { ASPECT_RATIOS, VIDEO_FORMATS, TRANSFORM_MODES, RESOLUTION_PRESETS } = require('./constants');
 
+// Get bundled FFmpeg paths - these work in both dev and packaged app
+function getBundledPaths() {
+  try {
+    const ffmpegPath = require('ffmpeg-static');
+    const ffprobePath = require('ffprobe-static').path;
+    return { ffmpegPath, ffprobePath };
+  } catch (err) {
+    // Fallback to system PATH if bundled versions not available
+    return { ffmpegPath: null, ffprobePath: null };
+  }
+}
+
 /**
  * VideoConverter class handles all video conversion operations
  */
 class VideoConverter {
   constructor(options = {}) {
-    this.ffmpegPath = options.ffmpegPath || null;
-    this.ffprobePath = options.ffprobePath || null;
+    const bundled = getBundledPaths();
+    this.ffmpegPath = options.ffmpegPath || bundled.ffmpegPath;
+    this.ffprobePath = options.ffprobePath || bundled.ffprobePath;
 
     if (this.ffmpegPath) {
       ffmpeg.setFfmpegPath(this.ffmpegPath);
@@ -209,6 +222,7 @@ class VideoConverter {
           resolution = null,
           backgroundColor = 'black',
           quality = 'medium',
+          watermark = false,
           onProgress = null
         } = options;
 
@@ -239,7 +253,13 @@ class VideoConverter {
             resolution
           );
 
-          const filterString = this.buildFilterString(dimensions, backgroundColor);
+          let filterString = this.buildFilterString(dimensions, backgroundColor);
+
+          // Add watermark for free users
+          if (watermark) {
+            filterString += `,drawtext=text='VideoConvert Free':fontsize=24:fontcolor=white@0.5:x=10:y=h-40`;
+          }
+
           command = command.videoFilters(filterString);
         } else if (resolution) {
           // Just apply resolution without aspect ratio change

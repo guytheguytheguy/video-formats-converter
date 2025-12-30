@@ -54,7 +54,88 @@ app.use(express.json());
 // Store active conversions
 const activeConversions = new Map();
 
+// License/Pro status management
+// In Electron, this comes from electron-store. In web, we use a simple in-memory store.
+let proStatus = {
+  isPro: false,
+  license: null,
+  // For development/testing, set DEV_PRO=true to enable pro features
+  // In production, this is set via license validation
+};
+
+// Free tier limits
+const FREE_LIMITS = {
+  maxResolution: 720,           // 720p max
+  allowedFormats: ['mp4'],      // MP4 only
+  watermark: true,              // Add watermark
+  batchConversion: false,       // No batch
+};
+
+// Pro tier - no limits
+const PRO_LIMITS = {
+  maxResolution: 4320,          // 4K+
+  allowedFormats: ['mp4', 'mov', 'mkv', 'avi', 'webm'],
+  watermark: false,
+  batchConversion: true,
+};
+
+function getLimits() {
+  return proStatus.isPro ? PRO_LIMITS : FREE_LIMITS;
+}
+
 // API Routes
+
+// Get license status
+app.get('/api/license', (req, res) => {
+  const limits = getLimits();
+  res.json({
+    isPro: proStatus.isPro,
+    license: proStatus.license ? '****' + proStatus.license.slice(-4) : null,
+    limits
+  });
+});
+
+// Validate and activate license
+app.post('/api/license/activate', async (req, res) => {
+  const { licenseKey } = req.body;
+
+  if (!licenseKey) {
+    return res.status(400).json({ error: 'License key required' });
+  }
+
+  // Simple pattern validation (VC-XXXX-XXXX-XXXX)
+  const pattern = /^VC-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+
+  // For production, validate against LemonSqueezy API:
+  // const response = await fetch('https://api.lemonsqueezy.com/v1/licenses/validate', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ license_key: licenseKey })
+  // });
+
+  if (pattern.test(licenseKey)) {
+    proStatus.isPro = true;
+    proStatus.license = licenseKey;
+    res.json({
+      success: true,
+      isPro: true,
+      message: 'License activated successfully!',
+      limits: PRO_LIMITS
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      error: 'Invalid license key format'
+    });
+  }
+});
+
+// Deactivate license
+app.post('/api/license/deactivate', (req, res) => {
+  proStatus.isPro = false;
+  proStatus.license = null;
+  res.json({ success: true, isPro: false, limits: FREE_LIMITS });
+});
 app.get('/api/config', (req, res) => {
   res.json({
     aspectRatios: ASPECT_RATIOS,
@@ -92,6 +173,28 @@ app.post('/api/convert', async (req, res) => {
     return res.status(400).json({ error: 'Missing file ID' });
   }
 
+  // Get current limits based on license status
+  const limits = getLimits();
+  let outputFormat = format || 'mp4';
+  let outputResolution = resolution;
+
+  // Enforce free tier limits
+  if (!proStatus.isPro) {
+    // Check format restriction
+    if (!limits.allowedFormats.includes(outputFormat)) {
+      return res.status(403).json({
+        error: `Format "${outputFormat}" requires Pro. Free tier only supports: ${limits.allowedFormats.join(', ')}`,
+        requiresPro: true,
+        feature: 'format'
+      });
+    }
+
+    // Enforce 720p max for free users
+    if (outputResolution && ['4k', '1080p'].includes(outputResolution)) {
+      outputResolution = '720p';
+    }
+  }
+
   const jobId = uuidv4();
   const inputPath = path.join(uploadsDir, `${fileId}${path.extname(filename)}`);
 
@@ -99,7 +202,6 @@ app.post('/api/convert', async (req, res) => {
     return res.status(404).json({ error: 'Input file not found' });
   }
 
-  const outputFormat = format || 'mp4';
   const outputFilename = `${fileId}_converted.${outputFormat}`;
   const outputPath = path.join(outputDir, outputFilename);
 
@@ -107,10 +209,11 @@ app.post('/api/convert', async (req, res) => {
     status: 'processing',
     progress: 0,
     inputPath,
-    outputPath
+    outputPath,
+    isPro: proStatus.isPro
   });
 
-  res.json({ jobId, message: 'Conversion started' });
+  res.json({ jobId, message: 'Conversion started', isPro: proStatus.isPro });
 
   // Start conversion in background
   const converter = new VideoConverter();
@@ -119,10 +222,11 @@ app.post('/api/convert', async (req, res) => {
     await converter.convert(inputPath, outputPath, {
       aspectRatio,
       format: outputFormat,
-      transformMode: mode || 'fit',
+      transformMode: mode || 'fill',
       quality: quality || 'medium',
-      resolution,
+      resolution: outputResolution,
       backgroundColor: backgroundColor || 'black',
+      watermark: limits.watermark,  // Add watermark for free users
       onProgress: (progress) => {
         const job = activeConversions.get(jobId);
         if (job) {

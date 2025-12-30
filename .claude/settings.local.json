@@ -9,7 +9,9 @@
       "Bash(gh auth status:*)",
       "Bash(ffprobe:*)",
       "Bash(node scripts/kill-port.js:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(npm run build:win:*)",
+      "Bash(dir:*)"
     ]
   }
 }
