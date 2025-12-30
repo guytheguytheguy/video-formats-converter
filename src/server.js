@@ -80,8 +80,8 @@ const activeConversions = new Map();
 // License/Pro status management
 // In Electron, this comes from electron-store. In web, we use a simple in-memory store.
 let proStatus = {
-  isPro: true,  // Admin mode - unlimited access
-  license: 'VC-ADMIN-MODE-XXXX',
+  isPro: false,
+  license: null,
   // For development/testing, set DEV_PRO=true to enable pro features
   // In production, this is set via license validation
 };
