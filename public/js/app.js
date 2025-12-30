@@ -116,6 +116,12 @@ class VideoConverterApp {
     } else if (watermarkWarning) {
       watermarkWarning.remove();
     }
+
+    // Also remove the download free notice if user is now Pro
+    if (this.isPro) {
+      const freeNotice = document.getElementById('free-notice');
+      if (freeNotice) freeNotice.remove();
+    }
   }
 
   showUpgradeModal() {
