@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const { v4: uuidv4 } = require('uuid');
 const VideoConverter = require('./converter');
 const { ASPECT_RATIOS, VIDEO_FORMATS, TRANSFORM_MODES, RESOLUTION_PRESETS } = require('./constants');
@@ -14,10 +15,32 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
+// Determine base directory for uploads/output
+// In packaged Electron app, use user's app data directory
+// In development, use project directory
+function getDataDir() {
+  // Check if running in packaged Electron app (multiple detection methods)
+  const isPackaged = process.resourcesPath ||
+                     __dirname.includes('app.asar') ||
+                     process.argv[0].includes('VideoConvert');
+
+  if (isPackaged) {
+    // Use user's home directory for packaged app
+    const appDataDir = path.join(os.homedir(), '.videoconvert');
+    console.log('Running in packaged mode, using data dir:', appDataDir);
+    return appDataDir;
+  }
+  // Development mode - use project directory
+  console.log('Running in dev mode, using project dir');
+  return path.join(__dirname, '..');
+}
+
+const dataDir = getDataDir();
+const uploadsDir = path.join(dataDir, 'uploads');
+const outputDir = path.join(dataDir, 'output');
+
 // Ensure directories exist
-const uploadsDir = path.join(__dirname, '../uploads');
-const outputDir = path.join(__dirname, '../output');
-[uploadsDir, outputDir].forEach(dir => {
+[dataDir, uploadsDir, outputDir].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -57,8 +80,8 @@ const activeConversions = new Map();
 // License/Pro status management
 // In Electron, this comes from electron-store. In web, we use a simple in-memory store.
 let proStatus = {
-  isPro: false,
-  license: null,
+  isPro: true,  // Admin mode - unlimited access
+  license: 'VC-ADMIN-MODE-XXXX',
   // For development/testing, set DEV_PRO=true to enable pro features
   // In production, this is set via license validation
 };

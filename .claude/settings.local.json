@@ -14,7 +14,9 @@
       "Bash(dir:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(npx electron-builder:*)",
+      "Bash(wmic process where \"name like ''%VideoConvert%'' or name like ''%electron%''\" get processid,name)"
     ]
   }
 }

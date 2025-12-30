@@ -42,7 +42,8 @@
         "nsis",
         "portable"
       ],
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.ico",
+      "publisherName": "cyberos"
     },
     "mac": {
       "target": [
@@ -75,7 +76,7 @@
     "avi",
     "webm"
   ],
-  "author": "",
+  "author": "cyberos",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
