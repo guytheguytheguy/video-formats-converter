@@ -1,14 +1,39 @@
 const ffmpeg = require('fluent-ffmpeg');
 const path = require('path');
+const fs = require('fs');
 const { ASPECT_RATIOS, VIDEO_FORMATS, TRANSFORM_MODES, RESOLUTION_PRESETS } = require('./constants');
 
-// Get bundled FFmpeg paths - these work in both dev and packaged app
+// Get bundled FFmpeg paths - handles both dev and packaged Electron app
 function getBundledPaths() {
   try {
+    // Check if running in packaged Electron app
+    const isPackaged = process.resourcesPath &&
+                       (process.resourcesPath.includes('app.asar') ||
+                        fs.existsSync(path.join(process.resourcesPath, 'app.asar')));
+
+    if (isPackaged) {
+      // In packaged app, binaries are in app.asar.unpacked
+      const unpackedPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules');
+      const platform = process.platform === 'win32' ? 'win32' : process.platform === 'darwin' ? 'darwin' : 'linux';
+      const arch = process.arch;
+
+      const ffmpegPath = path.join(unpackedPath, 'ffmpeg-static', platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg');
+      const ffprobePath = path.join(unpackedPath, 'ffprobe-static', 'bin', platform, arch, platform === 'win32' ? 'ffprobe.exe' : 'ffprobe');
+
+      console.log('Packaged mode - ffmpeg:', ffmpegPath, 'exists:', fs.existsSync(ffmpegPath));
+      console.log('Packaged mode - ffprobe:', ffprobePath, 'exists:', fs.existsSync(ffprobePath));
+
+      return { ffmpegPath, ffprobePath };
+    }
+
+    // Development mode - use require which resolves to node_modules
     const ffmpegPath = require('ffmpeg-static');
     const ffprobePath = require('ffprobe-static').path;
+    console.log('Dev mode - ffmpeg:', ffmpegPath);
+    console.log('Dev mode - ffprobe:', ffprobePath);
     return { ffmpegPath, ffprobePath };
   } catch (err) {
+    console.error('Failed to get bundled paths:', err);
     // Fallback to system PATH if bundled versions not available
     return { ffmpegPath: null, ffprobePath: null };
   }
