@@ -2,7 +2,7 @@ export const APP_NAME = 'VideoConvert'
 export const APP_TAGLINE = 'Transform Videos for Any Platform'
 export const APP_DESCRIPTION = 'Convert video aspect ratios and formats instantly. 100% local processing - your videos never leave your device.'
 export const APP_VERSION = '1.0.0'
-export const APP_URL = 'https://videoconvert.app'
+export const APP_URL = 'https://videoconvert.video'
 
 export const PRICING = {
   free: {
@@ -103,7 +103,7 @@ export const FOOTER_LINKS = {
   resources: [
     { name: 'Documentation', href: '/docs' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Changelog', href: '/changelog' },
+    { name: 'Feedback', href: '/feedback' },
     { name: 'GitHub', href: 'https://github.com' },
   ],
   company: [
