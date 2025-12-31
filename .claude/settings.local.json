@@ -21,7 +21,8 @@
       "Bash(cd:*)",
       "Bash(node:*)",
       "Bash(timeout /t 2 /nobreak)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(c:)"
     ]
   }
 }

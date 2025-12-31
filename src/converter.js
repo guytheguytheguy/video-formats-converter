@@ -263,6 +263,9 @@ class VideoConverter {
         // Start building ffmpeg command
         let command = ffmpeg(inputPath);
 
+        // Build video filters
+        let filters = [];
+
         // Apply aspect ratio conversion if specified
         if (aspectRatio) {
           const ratioConfig = ASPECT_RATIOS[aspectRatio];
@@ -278,20 +281,23 @@ class VideoConverter {
             resolution
           );
 
-          let filterString = this.buildFilterString(dimensions, backgroundColor);
-
-          // Add watermark for free users
-          if (watermark) {
-            filterString += `,drawtext=text='VideoConvert Free':fontsize=24:fontcolor=white@0.5:x=10:y=h-40`;
-          }
-
-          command = command.videoFilters(filterString);
+          filters.push(this.buildFilterString(dimensions, backgroundColor));
         } else if (resolution) {
           // Just apply resolution without aspect ratio change
           const preset = RESOLUTION_PRESETS[resolution];
           if (preset) {
-            command = command.size(`${preset.width}x${preset.height}`);
+            filters.push(`scale=${preset.width}:${preset.height}`);
           }
+        }
+
+        // Add watermark for free users (always, regardless of aspect ratio)
+        if (watermark) {
+          filters.push(`drawtext=text='VideoConvert Free':fontsize=24:fontcolor=white@0.5:x=10:y=h-40`);
+        }
+
+        // Apply filters if any
+        if (filters.length > 0) {
+          command = command.videoFilters(filters.join(','));
         }
 
         // Set video codec
