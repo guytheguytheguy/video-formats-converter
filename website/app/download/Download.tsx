@@ -13,9 +13,10 @@ const platforms = [
     name: 'Windows',
     icon: Monitor,
     requirements: 'Windows 10 or later',
+    available: true,
     downloads: [
-      { name: 'Installer (.exe)', url: '#', recommended: true },
-      { name: 'Portable (.exe)', url: '#', recommended: false },
+      { name: 'Installer (.exe)', url: 'https://github.com/guytheguytheguy/video-formats-converter/releases/download/v1.0.0/VideoConvert.Setup.1.0.0.exe', recommended: true },
+      { name: 'Portable (.exe)', url: 'https://github.com/guytheguytheguy/video-formats-converter/releases/download/v1.0.0/VideoConvert.1.0.0.exe', recommended: false },
     ],
   },
   {
@@ -23,6 +24,8 @@ const platforms = [
     name: 'macOS',
     icon: Apple,
     requirements: 'macOS 10.15 (Catalina) or later',
+    available: false,
+    comingSoon: true,
     downloads: [
       { name: 'DMG', url: '#', recommended: true },
       { name: 'ZIP', url: '#', recommended: false },
@@ -33,6 +36,8 @@ const platforms = [
     name: 'Linux',
     icon: Monitor,
     requirements: 'Ubuntu 20.04 or equivalent',
+    available: false,
+    comingSoon: true,
     downloads: [
       { name: 'AppImage', url: '#', recommended: true },
       { name: '.deb', url: '#', recommended: false },
@@ -49,7 +54,7 @@ const systemRequirements = [
 const changelog = [
   {
     version: '1.0.0',
-    date: '2024-01-15',
+    date: '2025-12-31',
     changes: [
       'Initial release',
       'Support for 16:9, 9:16, 1:1, 4:5 aspect ratios',
@@ -103,10 +108,13 @@ export function Download() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card className={`h-full ${isDetected ? 'border-primary-500/50' : ''}`}>
+                  <Card className={`h-full ${isDetected ? 'border-primary-500/50' : ''} ${platform.comingSoon ? 'opacity-75' : ''}`}>
                     <CardContent className="p-8 text-center">
-                      {isDetected && (
+                      {isDetected && platform.available && (
                         <Badge variant="primary" className="mb-4">Detected</Badge>
+                      )}
+                      {platform.comingSoon && (
+                        <Badge variant="outline" className="mb-4">Coming Soon</Badge>
                       )}
                       <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
                         <platform.icon className="w-8 h-8 text-white/60" />
@@ -115,20 +123,28 @@ export function Download() {
                       <p className="text-white/40 text-sm mb-6">{platform.requirements}</p>
 
                       <div className="space-y-3">
-                        {platform.downloads.map((download) => (
-                          <a key={download.name} href={download.url}>
-                            <Button
-                              variant={download.recommended ? 'primary' : 'outline'}
-                              className="w-full"
-                            >
-                              <DownloadIcon className="w-4 h-4 mr-2" />
-                              {download.name}
-                              {download.recommended && (
-                                <Badge variant="secondary" className="ml-2 text-xs">Recommended</Badge>
-                              )}
-                            </Button>
-                          </a>
-                        ))}
+                        {platform.available ? (
+                          platform.downloads.map((download) => (
+                            <a key={download.name} href={download.url}>
+                              <Button
+                                variant={download.recommended ? 'primary' : 'outline'}
+                                className="w-full"
+                              >
+                                <DownloadIcon className="w-4 h-4 mr-2" />
+                                {download.name}
+                                {download.recommended && (
+                                  <Badge variant="secondary" className="ml-2 text-xs">Recommended</Badge>
+                                )}
+                              </Button>
+                            </a>
+                          ))
+                        ) : (
+                          <div className="py-4">
+                            <p className="text-white/40 text-sm">
+                              We're working on {platform.name} support. Sign up for our newsletter to be notified when it's ready!
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>

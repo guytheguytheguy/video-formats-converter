@@ -29,7 +29,12 @@
       "Bash(npx vercel --yes)",
       "Bash(git rm:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd marketing website for VideoConvert\n\nFeatures:\n- Next.js 16 with App Router and Tailwind CSS\n- 11 pages: Home, Features, Pricing, Download, Demo, Docs, Blog, About, Contact, Privacy, Terms\n- Interactive demo with simulated video conversion\n- Newsletter signup forms\n- Blog system with 3 initial posts\n- Responsive dark theme matching the app\n- Deployed to Vercel\n\nAlso includes:\n- Marketing launch plan\n- Updated .gitignore to exclude .next build artifacts\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd feedback form and website links\n\nWebsite:\n- Add /feedback page with bug report, feature request, and general feedback form\n- Star rating, feedback type selector, platform/version fields\n- Add Feedback link to footer navigation\n- Update APP_URL to videoconvert.video\n\nApp:\n- Add footer links to Website, Feedback, and Docs\n- Style footer links with hover effects\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh release:*)",
+      "Bash(\"dist-electron/VideoConvert Setup 1.0.0.exe\" )",
+      "Bash(\"dist-electron/VideoConvert 1.0.0.exe\" )",
+      "Bash(npx vercel --prod --yes)"
     ]
   }
 }
