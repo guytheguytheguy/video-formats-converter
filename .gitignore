@@ -38,3 +38,9 @@ coverage/
 *.temp
 .cache/
 nul
+
+# Website (Next.js)
+website/.next/
+website/out/
+website/.vercel/
+website/node_modules/
