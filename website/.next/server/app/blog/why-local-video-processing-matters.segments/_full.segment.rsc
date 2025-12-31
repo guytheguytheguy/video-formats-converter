@@ -1,0 +1,69 @@
+1:"$Sreact.fragment"
+2:I[21558,["/_next/static/chunks/93b525c5d7f4b1c3.js","/_next/static/chunks/d10a1c9a0c6cfbf8.js"],"Header"]
+3:I[87180,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"default"]
+4:I[42045,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"default"]
+5:I[53727,["/_next/static/chunks/93b525c5d7f4b1c3.js","/_next/static/chunks/d10a1c9a0c6cfbf8.js"],"Footer"]
+7:I[19400,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"OutletBoundary"]
+8:"$Sreact.suspense"
+a:I[19400,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"ViewportBoundary"]
+c:I[19400,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"MetadataBoundary"]
+e:I[89192,["/_next/static/chunks/a0e533664789d2fa.js","/_next/static/chunks/e0f7cef4ba5f954b.js"],"default"]
+:HL["/_next/static/chunks/cbda6b2b30f1ab86.css","style"]
+0:{"P":null,"b":"A1XrpuvInuV3_aMRaQYTx","c":["","blog","why-local-video-processing-matters"],"q":"","i":false,"f":[[["",{"children":["blog",{"children":[["slug","why-local-video-processing-matters","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/cbda6b2b30f1ab86.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/93b525c5d7f4b1c3.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/d10a1c9a0c6cfbf8.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"scroll-smooth","children":["$","body",null,{"className":"min-h-screen flex flex-col","children":[["$","$L2",null,{}],["$","main",null,{"className":"flex-1 pt-16","children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","$L5",null,{}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L6",[["$","script","script-0",{"src":"/_next/static/chunks/cd263ed481255e50.js","async":true,"nonce":"$undefined"}]],["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$8",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],null]}],false]],"m":"$undefined","G":["$e",[]],"S":true}
+f:I[46190,["/_next/static/chunks/93b525c5d7f4b1c3.js","/_next/static/chunks/d10a1c9a0c6cfbf8.js","/_next/static/chunks/cd263ed481255e50.js"],"BlogPost"]
+10:T76d,
+# Why Local Video Processing Matters for Privacy
+
+In an era of cloud services, it's easy to forget that uploading files means trusting third parties with your data. Here's why local video processing is the privacy-conscious choice.
+
+## The Problem with Cloud Processing
+
+When you upload a video to a cloud service:
+
+1. **Your data leaves your control** - Files are stored on someone else's servers
+2. **Processing happens remotely** - Your content is accessible to the service provider
+3. **Terms of service** - Many services claim rights to use your content
+4. **Data breaches** - Cloud services are prime targets for hackers
+5. **Metadata collection** - Services often track usage patterns
+
+## Benefits of Local Processing
+
+### Complete Privacy
+With VideoConvert, your videos never leave your device. Processing happens entirely on your computer using FFmpeg.
+
+### No Upload Wait Times
+Local processing is instant - no waiting for uploads and downloads.
+
+### Works Offline
+No internet connection required after installation.
+
+### No File Size Limits
+Process files of any size without upload restrictions.
+
+### No Account Required
+Use the app without creating an account or sharing personal information.
+
+## How VideoConvert Protects Your Privacy
+
+- **Zero cloud uploads**: All processing is local
+- **No telemetry**: We don't track your usage
+- **No account required**: Anonymous usage
+- **Open architecture**: FFmpeg-based, verifiable processing
+- **Offline capable**: Works without internet
+
+## When Cloud Makes Sense
+
+Cloud processing can be useful for:
+- Collaboration with team members
+- Access from multiple devices
+- Mobile-only workflows
+
+But for privacy-sensitive content, local processing is always the safer choice.
+
+## Conclusion
+
+Your videos contain personal and professional content that deserves protection. Local processing with VideoConvert ensures your content stays private.
+    6:["$","$Lf",null,{"post":{"slug":"why-local-video-processing-matters","title":"Why Local Video Processing Matters for Privacy","excerpt":"Learn why processing videos locally on your device is more secure than cloud-based alternatives.","content":"$10","date":"2024-01-05","category":"tips","readTime":"4 min read","author":{"name":"VideoConvert Team","avatar":"VC"}}}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+9:null
+d:[["$","title","0",{"children":"Why Local Video Processing Matters for Privacy | VideoConvert"}],["$","meta","1",{"name":"description","content":"Learn why processing videos locally on your device is more secure than cloud-based alternatives."}],["$","meta","2",{"name":"author","content":"VideoConvert"}],["$","meta","3",{"name":"keywords","content":"video converter,aspect ratio converter,16:9 to 9:16,YouTube to TikTok,video format converter,free video converter,local video converter"}],["$","meta","4",{"name":"creator","content":"VideoConvert"}],["$","meta","5",{"name":"robots","content":"index, follow"}],["$","meta","6",{"property":"og:title","content":"VideoConvert - Transform Videos for Any Platform"}],["$","meta","7",{"property":"og:description","content":"Convert video aspect ratios and formats instantly. 100% local processing - your videos never leave your device."}],["$","meta","8",{"property":"og:url","content":"https://videoconvert.app"}],["$","meta","9",{"property":"og:site_name","content":"VideoConvert"}],["$","meta","10",{"property":"og:locale","content":"en_US"}],["$","meta","11",{"property":"og:type","content":"website"}],["$","meta","12",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","13",{"name":"twitter:title","content":"VideoConvert - Transform Videos for Any Platform"}],["$","meta","14",{"name":"twitter:description","content":"Convert video aspect ratios and formats instantly. 100% local processing - your videos never leave your device."}]]

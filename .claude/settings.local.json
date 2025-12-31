@@ -22,7 +22,10 @@
       "Bash(node:*)",
       "Bash(timeout /t 2 /nobreak)",
       "Bash(ping:*)",
-      "Bash(c:)"
+      "Bash(c:)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout /t 5 /nobreak)"
     ]
   }
 }
