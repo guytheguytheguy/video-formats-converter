@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Formats Converter - Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +15,19 @@
     <!-- Header -->
     <header class="header">
       <div class="logo">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="23 7 16 12 23 17 23 7"></polygon>
-          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-        </svg>
+        <div class="logo-container">
+          <svg class="logo-icon" viewBox="0 0 512 512" fill="none">
+            <rect width="512" height="512" rx="80" fill="url(#logoGrad)"/>
+            <path d="M160 190C160 178.954 168.954 170 180 170H300C311.046 170 320 178.954 320 190V322C320 333.046 311.046 342 300 342H180C168.954 342 160 333.046 160 322V190Z" fill="white"/>
+            <path d="M340 215L400 180V332L340 297V215Z" fill="white"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
         <span class="logo-text">VideoConvert</span>
       </div>
       <nav class="nav">

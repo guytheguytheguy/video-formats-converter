@@ -43,7 +43,7 @@
         "portable"
       ],
       "icon": "assets/icon.ico",
-      "publisherName": "cyberos"
+      "publisherName": "EndofCoding"
     },
     "mac": {
       "target": [
@@ -76,7 +76,7 @@
     "avi",
     "webm"
   ],
-  "author": "cyberos",
+  "author": "EndofCoding",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",

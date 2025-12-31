@@ -1,0 +1,26 @@
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  }).format(price)
+}
+
+export function detectPlatform(): 'windows' | 'macos' | 'linux' | 'unknown' {
+  if (typeof window === 'undefined') return 'unknown'
+
+  const userAgent = window.navigator.userAgent.toLowerCase()
+
+  if (userAgent.includes('win')) return 'windows'
+  if (userAgent.includes('mac')) return 'macos'
+  if (userAgent.includes('linux')) return 'linux'
+
+  return 'unknown'
+}

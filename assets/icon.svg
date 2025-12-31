@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Rounded Rect -->
+  <rect x="48" y="48" width="416" height="416" rx="80" fill="url(#grad1)" filter="url(#shadow)"/>
+  
+  <!-- Video Camera Icon -->
+  <path d="M160 190C160 178.954 168.954 170 180 170H300C311.046 170 320 178.954 320 190V322C320 333.046 311.046 342 300 342H180C168.954 342 160 333.046 160 322V190Z" fill="white"/>
+  <path d="M340 215L400 180V332L340 297V215Z" fill="white"/>
+  
+  <!-- Refresh/Convert Arrows -->
+  <path d="M240 120C180 120 130 170 130 230" stroke="white" stroke-width="24" stroke-linecap="round" opacity="0.6"/>
+  <path d="M272 392C332 392 382 342 382 282" stroke="white" stroke-width="24" stroke-linecap="round" opacity="0.6"/>
+</svg>

@@ -210,8 +210,14 @@ Without code signing, users see scary warnings.
 
 1. [ ] Set up Gumroad/LemonSqueezy account
 2. [ ] Create product page with screenshots
-3. [ ] Download FFmpeg binaries for each platform
-4. [ ] Build Electron app: `npm run build:win`
+3. [ ] **Generate app icons:**
+   - Use `assets/icon.svg` to generate:
+     - `assets/icon.ico` (Windows)
+     - `assets/icon.icns` (macOS)
+     - `assets/icon.png` (Linux/Web)
+   - Recommended tool: [IconGenerator](https://icon.kitchen/) or `sharp` CLI.
+4. [ ] Download FFmpeg binaries for each platform
+5. [ ] Build Electron app: `npm run build:win`
 5. [ ] Test installer on clean Windows VM
 6. [ ] Upload to GitHub Releases (free tier)
 7. [ ] Add upgrade prompts in app

@@ -80,7 +80,8 @@ async function createWindow() {
     },
     backgroundColor: '#0f0f1a',
     show: true, // Show immediately
-    title: 'VideoConvert - Starting...'
+    title: 'VideoConvert',
+    icon: path.join(__dirname, '../assets/icon.png')
   });
 
   // Show a loading page while server starts
