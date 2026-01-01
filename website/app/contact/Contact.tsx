@@ -8,24 +8,24 @@ import { Card, CardContent, Badge, Button, Input } from '@/components/ui'
 const contactMethods = [
   {
     icon: Mail,
-    title: 'Email',
-    description: 'For general inquiries and support',
-    value: 'support@videoconvert.app',
-    href: 'mailto:support@videoconvert.app',
+    title: 'General Inquiries',
+    description: 'For general questions and partnerships',
+    value: 'contact@videoconvert.video',
+    href: 'mailto:contact@videoconvert.video',
+  },
+  {
+    icon: Mail,
+    title: 'Support',
+    description: 'Technical support and help',
+    value: 'support@videoconvert.video',
+    href: 'mailto:support@videoconvert.video',
   },
   {
     icon: Github,
     title: 'GitHub Issues',
     description: 'Report bugs and request features',
-    value: 'github.com/videoconvert',
-    href: 'https://github.com',
-  },
-  {
-    icon: MessageCircle,
-    title: 'Discord',
-    description: 'Join our community',
-    value: 'discord.gg/videoconvert',
-    href: 'https://discord.com',
+    value: 'github.com/guytheguytheguy/video-formats-converter',
+    href: 'https://github.com/guytheguytheguy/video-formats-converter/issues',
   },
 ]
 

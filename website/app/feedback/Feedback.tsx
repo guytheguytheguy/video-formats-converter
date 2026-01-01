@@ -289,8 +289,8 @@ export function Feedback() {
         >
           <p className="text-white/40 text-sm">
             Prefer email?{' '}
-            <a href="mailto:feedback@videoconvert.video" className="text-primary-400 hover:underline">
-              feedback@videoconvert.video
+            <a href="mailto:support@videoconvert.video" className="text-primary-400 hover:underline">
+              support@videoconvert.video
             </a>
           </p>
         </motion.div>

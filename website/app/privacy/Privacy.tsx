@@ -194,8 +194,8 @@ export function Privacy() {
                 <h2 className="text-xl font-bold text-white mb-4">9. Contact Us</h2>
                 <p className="text-white/60">
                   If you have any questions about this Privacy Policy, please contact us at{' '}
-                  <a href="mailto:privacy@videoconvert.app" className="text-primary-400 hover:underline">
-                    privacy@videoconvert.app
+                  <a href="mailto:contact@videoconvert.video" className="text-primary-400 hover:underline">
+                    contact@videoconvert.video
                   </a>.
                 </p>
               </section>

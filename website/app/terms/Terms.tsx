@@ -184,8 +184,8 @@ export function Terms() {
                 <h2 className="text-xl font-bold text-white mb-4">13. Contact</h2>
                 <p className="text-white/60">
                   If you have any questions about these Terms, please contact us at{' '}
-                  <a href="mailto:legal@videoconvert.app" className="text-primary-400 hover:underline">
-                    legal@videoconvert.app
+                  <a href="mailto:contact@videoconvert.video" className="text-primary-400 hover:underline">
+                    contact@videoconvert.video
                   </a>.
                 </p>
               </section>

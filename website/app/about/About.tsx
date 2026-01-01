@@ -78,9 +78,8 @@ export function About() {
                   VideoConvert — a simple, beautiful interface for local video conversion.
                 </p>
                 <p>
-                  Today, VideoConvert is used by thousands of content creators, marketers, and
-                  developers who value their privacy and want fast, reliable video conversion
-                  without the cloud.
+                  VideoConvert is built for content creators, marketers, and developers who
+                  value their privacy and want fast, reliable video conversion without the cloud.
                 </p>
               </div>
             </motion.div>
@@ -167,7 +166,7 @@ export function About() {
               Ready to Try VideoConvert?
             </h2>
             <p className="text-white/60 mb-6">
-              Join thousands of users who trust VideoConvert for their video conversion needs.
+              Try VideoConvert for all your video conversion needs.
             </p>
             <Link href="/download">
               <Button size="lg" variant="primary">

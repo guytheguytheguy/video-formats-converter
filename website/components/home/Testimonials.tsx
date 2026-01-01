@@ -42,7 +42,7 @@ export function Testimonials() {
             Trusted by Creators Worldwide
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Join thousands of content creators, marketers, and developers who use VideoConvert.
+            See what content creators, marketers, and developers are saying about VideoConvert.
           </p>
         </div>
 
