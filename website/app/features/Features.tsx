@@ -29,8 +29,8 @@ const coreFeatures = [
   },
   {
     icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Powered by FFmpeg, the industry-standard video processing engine. Hardware acceleration supported.',
+    title: 'Powered by FFmpeg',
+    description: 'Built on the industry-standard video processing engine used by YouTube, Netflix, and professionals worldwide.',
     color: 'primary',
   },
   {
