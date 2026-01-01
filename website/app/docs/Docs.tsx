@@ -4,84 +4,17 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import {
-  Book, Terminal, Code, Settings, Download, HelpCircle,
-  ChevronRight, Copy, Check, ExternalLink
+  Book, Settings, Download, HelpCircle,
+  ExternalLink, Monitor
 } from 'lucide-react'
 import { Card, CardContent, Badge, Button } from '@/components/ui'
 
 const sections = [
   { id: 'quick-start', name: 'Quick Start', icon: Download },
-  { id: 'cli', name: 'CLI Usage', icon: Terminal },
-  { id: 'api', name: 'API Reference', icon: Code },
+  { id: 'using-the-app', name: 'Using the App', icon: Monitor },
   { id: 'configuration', name: 'Configuration', icon: Settings },
   { id: 'troubleshooting', name: 'Troubleshooting', icon: HelpCircle },
 ]
-
-const cliCommands = [
-  {
-    command: 'vconvert convert input.mp4 -r 9:16 -o output.mp4',
-    description: 'Convert video to 9:16 portrait aspect ratio',
-  },
-  {
-    command: 'vconvert convert input.mp4 -r 1:1 -m fill -o output.mp4',
-    description: 'Convert to square with fill (crop) mode',
-  },
-  {
-    command: 'vconvert portrait input.mp4 -o output.mp4',
-    description: 'Quick convert to 9:16 (TikTok/Reels)',
-  },
-  {
-    command: 'vconvert square input.mp4 -o output.mp4',
-    description: 'Quick convert to 1:1 (Instagram)',
-  },
-  {
-    command: 'vconvert batch ./videos -r 9:16 -o ./output',
-    description: 'Batch convert all videos in a directory (Pro)',
-  },
-  {
-    command: 'vconvert info input.mp4',
-    description: 'Show video file metadata',
-  },
-]
-
-const cliOptions = [
-  { flag: '-r, --ratio', value: '<ratio>', description: 'Target aspect ratio (16:9, 9:16, 1:1, 4:5)' },
-  { flag: '-m, --mode', value: '<mode>', description: 'Transform mode (fit, fill, stretch)' },
-  { flag: '-f, --format', value: '<format>', description: 'Output format (mp4, mov, mkv, avi, webm)' },
-  { flag: '-q, --quality', value: '<quality>', description: 'Quality preset (high, medium, low, draft)' },
-  { flag: '-s, --resolution', value: '<res>', description: 'Output resolution (4k, 1080p, 720p, 480p, 360p)' },
-  { flag: '-b, --background', value: '<color>', description: 'Background color for padding (default: black)' },
-  { flag: '-o, --output', value: '<path>', description: 'Output file path' },
-  { flag: '-h, --help', value: '', description: 'Show help' },
-]
-
-function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  return (
-    <div className="relative group">
-      <pre className="bg-background rounded-lg p-4 overflow-x-auto">
-        <code className="text-sm text-white/80 font-mono">{code}</code>
-      </pre>
-      <button
-        onClick={handleCopy}
-        className="absolute top-2 right-2 p-2 rounded-lg bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"
-      >
-        {copied ? (
-          <Check className="w-4 h-4 text-secondary-500" />
-        ) : (
-          <Copy className="w-4 h-4 text-white/60" />
-        )}
-      </button>
-    </div>
-  )
-}
 
 export function Docs() {
   const [activeSection, setActiveSection] = useState('quick-start')
@@ -104,7 +37,7 @@ export function Docs() {
               VideoConvert Docs
             </h1>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              Learn how to use VideoConvert, from basic usage to advanced CLI automation.
+              Learn how to use VideoConvert to convert your videos for any platform.
             </p>
           </motion.div>
         </div>
@@ -164,10 +97,7 @@ export function Docs() {
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-3">2. Launch the App</h3>
                     <p className="text-white/60 mb-4">
-                      Open VideoConvert. The web dashboard will automatically open in your browser at{' '}
-                      <code className="text-primary-400 bg-primary-500/10 px-2 py-0.5 rounded">
-                        http://localhost:3000
-                      </code>
+                      Open VideoConvert. The app window will appear, ready for video conversion.
                     </p>
                   </div>
 
@@ -185,147 +115,142 @@ export function Docs() {
               </Card>
             </section>
 
-            {/* CLI Usage */}
-            <section id="cli">
+            {/* Using the App */}
+            <section id="using-the-app">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Terminal className="w-6 h-6 text-primary-400" />
-                CLI Usage
+                <Monitor className="w-6 h-6 text-primary-400" />
+                Using the App
               </h2>
 
               <Card className="mb-6">
                 <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">Available Commands</h3>
-                  <CodeBlock code={`vconvert convert <input> [options]  # Convert a video
-vconvert batch <directory> [options] # Batch convert (Pro)
-vconvert portrait <input>            # Quick convert to 9:16
-vconvert landscape <input>           # Quick convert to 16:9
-vconvert square <input>              # Quick convert to 1:1
-vconvert info <input>                # Show video metadata
-vconvert list                        # List supported formats`} />
+                  <h3 className="text-lg font-semibold text-white mb-4">Aspect Ratios</h3>
+                  <p className="text-white/60 mb-4">
+                    Choose from four standard aspect ratios optimized for different platforms:
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">16:9 Landscape</div>
+                      <p className="text-white/40 text-sm">YouTube, TV, Desktop</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">9:16 Portrait</div>
+                      <p className="text-white/40 text-sm">TikTok, Reels, Shorts</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">1:1 Square</div>
+                      <p className="text-white/40 text-sm">Instagram Feed, Profile</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">4:5 Vertical</div>
+                      <p className="text-white/40 text-sm">Instagram, Facebook</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
               <Card className="mb-6">
                 <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">Examples</h3>
+                  <h3 className="text-lg font-semibold text-white mb-4">Transform Modes</h3>
+                  <p className="text-white/60 mb-4">
+                    Control how your video is adapted to the new aspect ratio:
+                  </p>
                   <div className="space-y-4">
-                    {cliCommands.map((cmd, index) => (
-                      <div key={index}>
-                        <CodeBlock code={cmd.command} />
-                        <p className="text-white/40 text-sm mt-2">{cmd.description}</p>
-                      </div>
-                    ))}
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">Fit (Letterbox/Pillarbox)</div>
+                      <p className="text-white/40 text-sm">
+                        Scales the video to fit within the frame, adding black bars where needed.
+                        No content is cropped. Best for preserving the entire video.
+                      </p>
+                    </div>
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">Fill (Crop)</div>
+                      <p className="text-white/40 text-sm">
+                        Scales the video to completely fill the frame, cropping edges as needed.
+                        No black bars. Best when you want edge-to-edge video.
+                      </p>
+                    </div>
+                    <div className="bg-background rounded-lg p-4">
+                      <div className="font-semibold text-white mb-1">Stretch</div>
+                      <p className="text-white/40 text-sm">
+                        Stretches the video to fill the entire frame. This will distort the video
+                        if the aspect ratios don't match. Use sparingly.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="mb-6">
+                <CardContent>
+                  <h3 className="text-lg font-semibold text-white mb-4">Output Formats</h3>
+                  <p className="text-white/60 mb-4">
+                    Export your converted videos in these formats:
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div className="bg-background rounded-lg p-3 text-center">
+                      <div className="font-semibold text-white">MP4</div>
+                      <p className="text-white/40 text-xs">Universal</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-3 text-center">
+                      <div className="font-semibold text-white">MOV</div>
+                      <p className="text-white/40 text-xs">Apple</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-3 text-center">
+                      <div className="font-semibold text-white">MKV</div>
+                      <p className="text-white/40 text-xs">Pro</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-3 text-center">
+                      <div className="font-semibold text-white">AVI</div>
+                      <p className="text-white/40 text-xs">Pro</p>
+                    </div>
+                    <div className="bg-background rounded-lg p-3 text-center">
+                      <div className="font-semibold text-white">WebM</div>
+                      <p className="text-white/40 text-xs">Pro</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">Options Reference</h3>
+                  <h3 className="text-lg font-semibold text-white mb-4">Quality Presets</h3>
+                  <p className="text-white/60 mb-4">
+                    Choose a quality preset based on your needs:
+                  </p>
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-white/10">
-                          <th className="text-left py-3 px-2 text-white font-medium">Flag</th>
-                          <th className="text-left py-3 px-2 text-white font-medium">Value</th>
-                          <th className="text-left py-3 px-2 text-white font-medium">Description</th>
+                          <th className="text-left py-3 px-2 text-white font-medium">Preset</th>
+                          <th className="text-left py-3 px-2 text-white font-medium">Best For</th>
+                          <th className="text-left py-3 px-2 text-white font-medium">Speed</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {cliOptions.map((opt) => (
-                          <tr key={opt.flag} className="border-b border-white/5">
-                            <td className="py-3 px-2">
-                              <code className="text-primary-400 text-sm">{opt.flag}</code>
-                            </td>
-                            <td className="py-3 px-2 text-white/60 text-sm">{opt.value}</td>
-                            <td className="py-3 px-2 text-white/60 text-sm">{opt.description}</td>
-                          </tr>
-                        ))}
+                        <tr className="border-b border-white/5">
+                          <td className="py-3 px-2 text-primary-400 font-medium">High</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Final exports, professional use</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Slower</td>
+                        </tr>
+                        <tr className="border-b border-white/5">
+                          <td className="py-3 px-2 text-primary-400 font-medium">Medium</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Social media, general use</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Balanced</td>
+                        </tr>
+                        <tr className="border-b border-white/5">
+                          <td className="py-3 px-2 text-primary-400 font-medium">Low</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Quick shares, smaller files</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Faster</td>
+                        </tr>
+                        <tr className="border-b border-white/5">
+                          <td className="py-3 px-2 text-primary-400 font-medium">Draft</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Previews, testing</td>
+                          <td className="py-3 px-2 text-white/60 text-sm">Fastest</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* API Reference */}
-            <section id="api">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Code className="w-6 h-6 text-primary-400" />
-                API Reference
-              </h2>
-
-              <Card className="mb-6">
-                <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">Node.js Module</h3>
-                  <p className="text-white/60 mb-4">
-                    VideoConvert can be used as a Node.js module for programmatic access.
-                  </p>
-                  <CodeBlock
-                    code={`const { VideoConverter } = require('video-formats-converter');
-
-// Create converter instance
-const converter = new VideoConverter();
-
-// Basic conversion
-await converter.convert('input.mp4', 'output.mp4', {
-  ratio: '9:16',
-  mode: 'fit',
-  format: 'mp4',
-  quality: 'high'
-});
-
-// Get video metadata
-const metadata = await converter.getMetadata('input.mp4');
-console.log(metadata);
-
-// Batch conversion (Pro)
-await converter.batchConvert(
-  ['video1.mp4', 'video2.mp4'],
-  './output',
-  { ratio: '1:1' }
-);`}
-                    language="javascript"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">REST API (Web Dashboard)</h3>
-                  <p className="text-white/60 mb-4">
-                    The web dashboard exposes a REST API at <code className="text-primary-400">localhost:3000/api</code>.
-                  </p>
-                  <div className="space-y-4">
-                    <div>
-                      <Badge variant="secondary" className="mb-2">POST</Badge>
-                      <code className="text-white ml-2">/api/upload</code>
-                      <p className="text-white/40 text-sm mt-1">Upload a video file (multipart/form-data)</p>
-                    </div>
-                    <div>
-                      <Badge variant="secondary" className="mb-2">POST</Badge>
-                      <code className="text-white ml-2">/api/convert</code>
-                      <p className="text-white/40 text-sm mt-1">Start a new conversion job</p>
-                    </div>
-                    <div>
-                      <Badge variant="primary" className="mb-2">GET</Badge>
-                      <code className="text-white ml-2">/api/job/:jobId</code>
-                      <p className="text-white/40 text-sm mt-1">Get job status and progress</p>
-                    </div>
-                    <div>
-                      <Badge variant="primary" className="mb-2">GET</Badge>
-                      <code className="text-white ml-2">/api/config</code>
-                      <p className="text-white/40 text-sm mt-1">Get supported formats and ratios</p>
-                    </div>
-                    <div>
-                      <Badge variant="primary" className="mb-2">GET</Badge>
-                      <code className="text-white ml-2">/output/:filename</code>
-                      <p className="text-white/40 text-sm mt-1">Download converted file</p>
-                    </div>
-                  </div>
-                  <p className="text-white/40 text-sm mt-6">
-                    Real-time progress is available via Socket.IO events: <code className="text-primary-400">progress:jobId</code>, <code className="text-primary-400">complete:jobId</code>, <code className="text-primary-400">error:jobId</code>
-                  </p>
                 </CardContent>
               </Card>
             </section>
