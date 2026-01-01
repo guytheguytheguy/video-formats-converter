@@ -19,20 +19,28 @@ const sections = [
 
 const cliCommands = [
   {
-    command: 'vconvert input.mp4 -r 9:16 -o output.mp4',
+    command: 'vconvert convert input.mp4 -r 9:16 -o output.mp4',
     description: 'Convert video to 9:16 portrait aspect ratio',
   },
   {
-    command: 'vconvert input.mp4 -r 1:1 -m fill -o output.mp4',
+    command: 'vconvert convert input.mp4 -r 1:1 -m fill -o output.mp4',
     description: 'Convert to square with fill (crop) mode',
   },
   {
-    command: 'vconvert input.mp4 -f webm -q high -o output.webm',
-    description: 'Convert to WebM with high quality',
+    command: 'vconvert portrait input.mp4 -o output.mp4',
+    description: 'Quick convert to 9:16 (TikTok/Reels)',
   },
   {
-    command: 'vconvert input.mp4 -r 9:16 --resolution 1080p',
-    description: 'Convert with specific resolution',
+    command: 'vconvert square input.mp4 -o output.mp4',
+    description: 'Quick convert to 1:1 (Instagram)',
+  },
+  {
+    command: 'vconvert batch ./videos -r 9:16 -o ./output',
+    description: 'Batch convert all videos in a directory (Pro)',
+  },
+  {
+    command: 'vconvert info input.mp4',
+    description: 'Show video file metadata',
   },
 ]
 
@@ -41,9 +49,9 @@ const cliOptions = [
   { flag: '-m, --mode', value: '<mode>', description: 'Transform mode (fit, fill, stretch)' },
   { flag: '-f, --format', value: '<format>', description: 'Output format (mp4, mov, mkv, avi, webm)' },
   { flag: '-q, --quality', value: '<quality>', description: 'Quality preset (high, medium, low, draft)' },
+  { flag: '-s, --resolution', value: '<res>', description: 'Output resolution (4k, 1080p, 720p, 480p, 360p)' },
+  { flag: '-b, --background', value: '<color>', description: 'Background color for padding (default: black)' },
   { flag: '-o, --output', value: '<path>', description: 'Output file path' },
-  { flag: '--resolution', value: '<res>', description: 'Output resolution (4k, 1080p, 720p, 480p)' },
-  { flag: '--batch', value: '<dir>', description: 'Batch convert all videos in directory (Pro)' },
   { flag: '-h, --help', value: '', description: 'Show help' },
 ]
 
@@ -121,7 +129,7 @@ export function Docs() {
               ))}
               <div className="pt-4 border-t border-white/10 mt-4">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/guytheguytheguy/video-formats-converter"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2 text-white/40 hover:text-white text-sm"
@@ -186,8 +194,14 @@ export function Docs() {
 
               <Card className="mb-6">
                 <CardContent>
-                  <h3 className="text-lg font-semibold text-white mb-4">Basic Syntax</h3>
-                  <CodeBlock code="vconvert <input> [options] -o <output>" />
+                  <h3 className="text-lg font-semibold text-white mb-4">Available Commands</h3>
+                  <CodeBlock code={`vconvert convert <input> [options]  # Convert a video
+vconvert batch <directory> [options] # Batch convert (Pro)
+vconvert portrait <input>            # Quick convert to 9:16
+vconvert landscape <input>           # Quick convert to 16:9
+vconvert square <input>              # Quick convert to 1:1
+vconvert info <input>                # Show video metadata
+vconvert list                        # List supported formats`} />
                 </CardContent>
               </Card>
 
@@ -248,27 +262,29 @@ export function Docs() {
                     VideoConvert can be used as a Node.js module for programmatic access.
                   </p>
                   <CodeBlock
-                    code={`const { convert } = require('videoconvert');
+                    code={`const { VideoConverter } = require('video-formats-converter');
+
+// Create converter instance
+const converter = new VideoConverter();
 
 // Basic conversion
-await convert({
-  input: 'input.mp4',
-  output: 'output.mp4',
+await converter.convert('input.mp4', 'output.mp4', {
   ratio: '9:16',
   mode: 'fit',
   format: 'mp4',
   quality: 'high'
 });
 
-// With progress callback
-await convert({
-  input: 'input.mp4',
-  output: 'output.mp4',
-  ratio: '1:1',
-  onProgress: (percent) => {
-    console.log(\`Progress: \${percent}%\`);
-  }
-});`}
+// Get video metadata
+const metadata = await converter.getMetadata('input.mp4');
+console.log(metadata);
+
+// Batch conversion (Pro)
+await converter.batchConvert(
+  ['video1.mp4', 'video2.mp4'],
+  './output',
+  { ratio: '1:1' }
+);`}
                     language="javascript"
                   />
                 </CardContent>
@@ -283,20 +299,33 @@ await convert({
                   <div className="space-y-4">
                     <div>
                       <Badge variant="secondary" className="mb-2">POST</Badge>
+                      <code className="text-white ml-2">/api/upload</code>
+                      <p className="text-white/40 text-sm mt-1">Upload a video file (multipart/form-data)</p>
+                    </div>
+                    <div>
+                      <Badge variant="secondary" className="mb-2">POST</Badge>
                       <code className="text-white ml-2">/api/convert</code>
                       <p className="text-white/40 text-sm mt-1">Start a new conversion job</p>
                     </div>
                     <div>
                       <Badge variant="primary" className="mb-2">GET</Badge>
-                      <code className="text-white ml-2">/api/status/:jobId</code>
+                      <code className="text-white ml-2">/api/job/:jobId</code>
                       <p className="text-white/40 text-sm mt-1">Get job status and progress</p>
                     </div>
                     <div>
                       <Badge variant="primary" className="mb-2">GET</Badge>
-                      <code className="text-white ml-2">/api/download/:jobId</code>
+                      <code className="text-white ml-2">/api/config</code>
+                      <p className="text-white/40 text-sm mt-1">Get supported formats and ratios</p>
+                    </div>
+                    <div>
+                      <Badge variant="primary" className="mb-2">GET</Badge>
+                      <code className="text-white ml-2">/output/:filename</code>
                       <p className="text-white/40 text-sm mt-1">Download converted file</p>
                     </div>
                   </div>
+                  <p className="text-white/40 text-sm mt-6">
+                    Real-time progress is available via Socket.IO events: <code className="text-primary-400">progress:jobId</code>, <code className="text-primary-400">complete:jobId</code>, <code className="text-primary-400">error:jobId</code>
+                  </p>
                 </CardContent>
               </Card>
             </section>
@@ -369,7 +398,7 @@ await convert({
                       Check our GitHub issues or contact support.
                     </p>
                     <div className="flex gap-4">
-                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                      <a href="https://github.com/guytheguytheguy/video-formats-converter/issues" target="_blank" rel="noopener noreferrer">
                         <Button variant="outline" size="sm">
                           <ExternalLink className="w-4 h-4 mr-2" />
                           GitHub Issues

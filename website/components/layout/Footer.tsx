@@ -1,14 +1,45 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Video, Github, Twitter, MessageCircle } from 'lucide-react'
+import { Video, Github, Twitter, MessageCircle, Loader2 } from 'lucide-react'
 import { Button, Input } from '@/components/ui'
 import { APP_NAME, FOOTER_LINKS, APP_TAGLINE } from '@/lib/constants'
 
 export function Footer() {
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState<string | null>(null)
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Newsletter signup logic
+    setStatus('loading')
+    setMessage(null)
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setStatus('error')
+        setMessage(data.error || 'Subscription failed.')
+        return
+      }
+
+      setStatus('success')
+      setMessage('Thanks for subscribing!')
+      setEmail('')
+    } catch (err) {
+      setStatus('error')
+      setMessage('Network error. Please try again.')
+    }
   }
 
   return (
@@ -29,11 +60,28 @@ export function Footer() {
                 placeholder="Enter your email"
                 required
                 className="flex-1"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === 'loading' || status === 'success'}
               />
-              <Button type="submit" variant="primary">
-                Subscribe
+              <Button 
+                type="submit" 
+                variant="primary" 
+                disabled={status === 'loading' || status === 'success'}
+              >
+                {status === 'loading' ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Subscribing...
+                  </>
+                ) : 'Subscribe'}
               </Button>
             </form>
+            {message && (
+              <p className={`text-sm mt-3 ${status === 'error' ? 'text-red-400' : 'text-primary-400'}`}>
+                {message}
+              </p>
+            )}
             <p className="text-white/40 text-xs mt-3">
               No spam, unsubscribe anytime.
             </p>
