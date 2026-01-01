@@ -35,7 +35,8 @@
       "Bash(\"dist-electron/VideoConvert Setup 1.0.0.exe\" )",
       "Bash(\"dist-electron/VideoConvert 1.0.0.exe\" )",
       "Bash(npx vercel --prod --yes)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npx vercel:*)"
     ]
   }
 }

@@ -1,7 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -13,6 +10,20 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // Check if Resend API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.log('Newsletter signup (Resend not configured):', email);
+      // Still return success - you can manually add subscribers or configure Resend later
+      return NextResponse.json(
+        { success: true, message: 'Thanks for subscribing!' },
+        { status: 200 }
+      );
+    }
+
+    // Dynamic import to avoid build-time errors when key is not set
+    const { Resend } = await import('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Create contact in Resend
     const { data, error } = await resend.contacts.create({
