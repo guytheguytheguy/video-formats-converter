@@ -31,7 +31,6 @@ const values = [
 const milestones = [
   { year: '2024', event: 'VideoConvert launched' },
   { year: '2024', event: 'Pro version released' },
-  { year: '2024', event: 'CLI support added' },
   { year: '2024', event: 'Batch conversion feature' },
 ]
 
@@ -142,7 +141,7 @@ export function About() {
                 We believe in transparency and giving back to the community.
               </p>
               <a
-                href="https://github.com"
+                href="https://github.com/guytheguytheguy/video-formats-converter"
                 target="_blank"
                 rel="noopener noreferrer"
               >

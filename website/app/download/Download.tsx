@@ -60,7 +60,7 @@ const changelog = [
       'Support for 16:9, 9:16, 1:1, 4:5 aspect ratios',
       'MP4, MOV, MKV, AVI, WebM output formats',
       'Fit, Fill, Stretch transform modes',
-      'CLI and web dashboard interfaces',
+      'Desktop app with intuitive interface',
       'Batch conversion for Pro users',
     ],
   },

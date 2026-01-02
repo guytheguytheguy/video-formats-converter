@@ -16,8 +16,7 @@ const comparisonFeatures = [
   { name: '4K Resolution', free: false, pro: true },
   { name: 'Batch Conversion', free: false, pro: true },
   { name: 'No Watermark', free: false, pro: true },
-  { name: 'CLI Access', free: true, pro: true },
-  { name: 'Web Dashboard', free: true, pro: true },
+  { name: 'Desktop App', free: true, pro: true },
   { name: 'Custom Presets', free: false, pro: true },
   { name: 'Lifetime Updates', free: true, pro: true },
   { name: 'Priority Support', free: false, pro: true },
@@ -30,7 +29,7 @@ const faqs = [
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit cards, PayPal, and Apple Pay through our secure payment provider LemonSqueezy.',
+    answer: 'We accept all major credit cards, PayPal, and Apple Pay through our secure payment provider Gumroad.',
   },
   {
     question: 'Can I try before I buy?',

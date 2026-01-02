@@ -24,7 +24,7 @@ const testimonials = [
     avatar: 'MR',
   },
   {
-    quote: "The CLI integration is perfect for my workflow. I can batch convert videos programmatically.",
+    quote: "The batch conversion feature is perfect for my workflow. I can queue up all my videos and let it run.",
     author: 'David L.',
     role: 'Developer',
     avatar: 'DL',
@@ -109,7 +109,7 @@ export function Testimonials() {
           className="mt-12 text-center"
         >
           <a
-            href="https://github.com"
+            href="https://github.com/guytheguytheguy/video-formats-converter"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors"

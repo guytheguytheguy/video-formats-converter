@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Video, Github, Twitter, MessageCircle, Loader2 } from 'lucide-react'
+import { Video, Github, Loader2 } from 'lucide-react'
 import { Button, Input } from '@/components/ui'
 import { APP_NAME, FOOTER_LINKS, APP_TAGLINE } from '@/lib/constants'
 
@@ -107,28 +107,12 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href="https://github.com"
+                href="https://github.com/guytheguytheguy/video-formats-converter"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all"
               >
                 <Github className="w-4 h-4" />
-              </a>
-              <a
-                href="https://discord.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              >
-                <MessageCircle className="w-4 h-4" />
               </a>
             </div>
           </div>

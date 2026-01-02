@@ -12,7 +12,7 @@ export const PRICING = {
       'MP4 output format',
       '720p maximum resolution',
       'Single file conversion',
-      'CLI & Web dashboard',
+      'Desktop app',
       'All aspect ratios',
       'Watermark on output',
     ],
@@ -104,7 +104,7 @@ export const FOOTER_LINKS = {
     { name: 'Documentation', href: '/docs' },
     { name: 'Blog', href: '/blog' },
     { name: 'Feedback', href: '/feedback' },
-    { name: 'GitHub', href: 'https://github.com' },
+    { name: 'GitHub', href: 'https://github.com/guytheguytheguy/video-formats-converter' },
   ],
   company: [
     { name: 'About', href: '/about' },
@@ -115,7 +115,5 @@ export const FOOTER_LINKS = {
 }
 
 export const SOCIAL_LINKS = [
-  { name: 'Twitter', href: 'https://twitter.com', icon: 'Twitter' },
-  { name: 'GitHub', href: 'https://github.com', icon: 'Github' },
-  { name: 'Discord', href: 'https://discord.com', icon: 'MessageCircle' },
+  { name: 'GitHub', href: 'https://github.com/guytheguytheguy/video-formats-converter', icon: 'Github' },
 ]

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import {
   Monitor, Smartphone, Square, RectangleVertical,
   Crop, Maximize2, Move, FileVideo, Shield, Zap,
-  HardDrive, Terminal, Layers, Lock, Download
+  HardDrive, Layers, Lock, Download
 } from 'lucide-react'
 import { Card, CardContent, Badge, Button } from '@/components/ui'
 import { ASPECT_RATIOS, FORMATS, TRANSFORM_MODES } from '@/lib/constants'
@@ -40,16 +40,10 @@ const coreFeatures = [
     color: 'purple',
   },
   {
-    icon: Terminal,
-    title: 'CLI Support',
-    description: 'Automate your workflow with our powerful command-line interface. Perfect for batch processing.',
-    color: 'primary',
-  },
-  {
     icon: Layers,
-    title: 'Multiple Interfaces',
-    description: 'Use the desktop app, web dashboard, or CLI — whatever fits your workflow best.',
-    color: 'secondary',
+    title: 'Batch Processing',
+    description: 'Convert multiple videos at once. Queue up your files and let VideoConvert handle the rest.',
+    color: 'primary',
   },
   {
     icon: Lock,
